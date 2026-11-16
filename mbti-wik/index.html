@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="以彩色鉛筆手帳風格介紹麥布二氏心理類型量表、人格類型理論與學習。">
+  <title>麥布二氏心理類型量表｜彩色鉛筆手帳簡報</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f5ecd9;
+      --ink: #302f2c;
+      --muted: #6f695f;
+      --coral: #d9755b;
+      --coral-light: #eaa18a;
+      --mustard: #e6bb58;
+      --teal: #6f9c92;
+      --sage: #9eaf8c;
+      --blue: #7390a0;
+      --cream: #fff8e9;
+      --shadow: rgba(67, 51, 34, .16);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; }
+    body {
+      color: var(--ink);
+      background-color: #e8dcc7;
+      background-image: radial-gradient(rgba(85,63,39,.10) .55px, transparent .75px),
+        radial-gradient(rgba(255,255,255,.48) .55px, transparent .8px);
+      background-position: 0 0, 7px 5px;
+      background-size: 13px 13px, 17px 17px;
+      font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    }
+    button, a { font: inherit; }
+    button:focus-visible, a:focus-visible { outline: 3px solid #355d55; outline-offset: 4px; }
+    .deck { position: relative; width: 100vw; height: 100vh; display: grid; place-items: center; padding: 20px; }
+    .slide {
+      display: none; position: relative; isolation: isolate; overflow: hidden;
+      width: min(94vw, 1280px); height: min(88vh, 720px); min-height: 520px;
+      padding: clamp(32px, 5.2vw, 76px); border-radius: 3px;
+      background-color: var(--paper);
+      background-image: radial-gradient(rgba(91,64,35,.07) .65px, transparent .8px),
+        linear-gradient(135deg, rgba(255,255,255,.24), transparent 55%);
+      background-size: 12px 12px, 100% 100%;
+      box-shadow: 0 20px 55px var(--shadow), 0 2px 4px rgba(55,40,25,.10);
+    }
+    .slide::before { content: ""; position: absolute; z-index: -1; inset: 12px; border: 1px dashed rgba(73,66,54,.13); pointer-events: none; }
+    .slide.active { display: flex; flex-direction: column; animation: arrive .28s ease-out; }
+    @keyframes arrive { from { opacity: .72; transform: translateY(5px) rotate(-.15deg); } to { opacity: 1; transform: none; } }
+    .slide-head { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 20px; }
+    .kicker { display: inline-flex; align-items: center; gap: 9px; color: #61594e; font-size: 13px; font-weight: 750; letter-spacing: .14em; text-transform: uppercase; }
+    .kicker::before { content: ""; width: 21px; height: 8px; background: var(--coral); clip-path: polygon(4% 8%, 100% 0, 93% 85%, 0 100%); transform: rotate(-4deg); }
+    .chapter { color: var(--muted); font-size: 13px; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2 { font-family: "Noto Serif TC", "PMingLiU", serif; font-weight: 800; letter-spacing: .01em; }
+    h1 { font-size: clamp(40px, 6.2vw, 76px); line-height: 1.12; margin-bottom: 22px; }
+    h2 { font-size: clamp(31px, 4vw, 48px); line-height: 1.2; margin-bottom: 18px; }
+    h3 { font-size: 20px; line-height: 1.35; margin-bottom: 10px; }
+    p, li { font-size: clamp(17px, 1.8vw, 22px); line-height: 1.65; }
+    .lede { color: #514b43; font-size: clamp(20px, 2.25vw, 27px); line-height: 1.55; max-width: 680px; }
+    .small { color: var(--muted); font-size: 14px; line-height: 1.5; }
+    .source { margin-top: auto; padding-top: 16px; color: #756d62; font-size: 12px; line-height: 1.45; }
+    .source a { color: inherit; text-underline-offset: 3px; }
+    .cover-grid, .split { display: grid; grid-template-columns: 1.05fr .95fr; align-items: center; gap: clamp(24px, 5vw, 68px); flex: 1; }
+    .cover-note { display: inline-block; padding: 9px 18px; margin-bottom: 18px; background: var(--mustard); transform: rotate(-2deg); font-weight: 750; clip-path: polygon(2% 5%, 97% 0, 100% 90%, 6% 100%, 0 18%); }
+    .deck-subtitle { font-size: clamp(18px, 2vw, 23px); color: var(--muted); }
+    .art-board { position: relative; min-height: 350px; display: grid; place-items: center; }
+    .shape { position: absolute; filter: drop-shadow(4px 8px 3px rgba(64,47,29,.13)); }
+    .sun { width: 130px; height: 130px; border-radius: 50%; background: var(--mustard); top: 4%; right: 9%; }
+    .leaf { width: 270px; height: 245px; background: var(--teal); border-radius: 65% 35% 57% 43% / 46% 42% 58% 54%; left: 7%; bottom: 5%; transform: rotate(-15deg); }
+    .book { position: relative; width: 270px; height: 216px; transform: rotate(-7deg); filter: drop-shadow(8px 11px 4px rgba(64,47,29,.20)); }
+    .book .page-left, .book .page-right { position: absolute; top: 0; width: 50%; height: 100%; background: var(--cream); border: 2px solid #d5c8b1; }
+    .page-left { left: 0; border-radius: 18px 2px 4px 14px; clip-path: polygon(2% 0, 96% 4%, 100% 96%, 1% 100%); }
+    .page-right { right: 0; border-radius: 2px 18px 14px 4px; clip-path: polygon(4% 4%, 99% 0, 100% 100%, 0 96%); }
+    .book-label { position: absolute; inset: 36px 23px; display: grid; place-items: center; text-align: center; font: 800 23px/1.45 "Noto Serif TC", serif; color: #574f45; }
+    .book-label span { display: inline-block; padding: 6px 12px; background: #f2c873; transform: rotate(2deg); }
+    .book-spine { position: absolute; z-index: 2; left: 50%; top: 1%; height: 98%; width: 10px; background: #bd684f; transform: translateX(-50%); clip-path: polygon(20% 0, 100% 3%, 80% 100%, 0 97%); }
+    .tape { position: absolute; z-index: 4; width: 88px; height: 26px; top: 12%; left: 24%; background: rgba(231,192,107,.75); transform: rotate(-25deg); clip-path: polygon(4% 5%, 100% 0, 94% 92%, 0 100%); }
+    .route { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin: 20px 0 6px; }
+    .route-card { min-height: 194px; position: relative; padding: 24px 22px; background: var(--cream); box-shadow: 4px 6px 0 rgba(64,47,29,.08); }
+    .route-card:nth-child(1) { background: #f1c76d; clip-path: polygon(2% 2%, 96% 0, 100% 94%, 6% 100%, 0 10%); transform: rotate(-1.2deg); }
+    .route-card:nth-child(2) { background: #e99a7d; clip-path: polygon(5% 0, 100% 4%, 96% 100%, 0 95%, 2% 12%); transform: rotate(1deg); }
+    .route-card:nth-child(3) { background: #9fba9f; clip-path: polygon(0 5%, 96% 0, 100% 100%, 4% 96%); transform: rotate(-.6deg); }
+    .number { font-family: Georgia, serif; font-size: 42px; font-weight: 800; opacity: .55; }
+    .route-card h3 { margin: 5px 0 6px; font-family: "Noto Serif TC", serif; }
+    .route-card p { margin: 0; font-size: 16px; line-height: 1.48; }
+    .quote-paper { position: relative; padding: clamp(28px, 4vw, 48px); background: #fff7e6; clip-path: polygon(2% 2%, 97% 0, 100% 95%, 4% 100%, 0 10%); box-shadow: 5px 8px 0 rgba(64,47,29,.09); }
+    .quote-paper::before { content: ""; position: absolute; top: 15px; right: 18px; width: 50px; height: 12px; background: rgba(218,117,91,.55); transform: rotate(8deg); }
+    .label { display: inline-block; margin-bottom: 16px; padding: 5px 11px; font-size: 13px; font-weight: 800; background: var(--teal); color: #fffdf6; transform: rotate(-2deg); }
+    .chips { display: flex; flex-wrap: wrap; gap: 12px; margin: 18px 0; }
+    .chip { padding: 10px 16px; background: var(--mustard); clip-path: polygon(3% 0, 98% 5%, 100% 92%, 0 100%); font-weight: 800; }
+    .chip:nth-child(2) { background: #e99a7d; transform: rotate(2deg); }
+    .readers { position: relative; height: 300px; display: grid; place-items: center; }
+    .person { position: absolute; width: 135px; height: 200px; bottom: 20px; }
+    .person.one { left: 12%; transform: rotate(-4deg); }
+    .person.two { right: 13%; transform: rotate(4deg); }
+    .head { position: absolute; top: 0; left: 38px; width: 70px; height: 82px; border-radius: 44% 47% 43% 46%; background: #cd8766; clip-path: polygon(12% 5%, 90% 0, 100% 53%, 82% 95%, 42% 100%, 5% 74%, 0 28%); }
+    .body { position: absolute; left: 8px; bottom: 0; width: 120px; height: 127px; border-radius: 44% 50% 4% 5%; clip-path: polygon(18% 3%, 79% 0, 100% 22%, 91% 100%, 6% 96%, 0 25%); background: var(--blue); }
+    .person.two .body { background: var(--coral); }
+    .paper-book { position: absolute; z-index: 2; bottom: 52px; left: 50%; width: 125px; height: 74px; transform: translateX(-50%) rotate(-5deg); background: var(--cream); border: 1px solid #cbbda6; clip-path: polygon(0 4%, 48% 0, 50% 100%, 4% 94%, 54% 98%, 57% 0, 100% 7%, 96% 97%, 52% 100%); }
+    .paper-book::after { content: ""; position: absolute; top: 8px; left: 51%; height: 82%; border-left: 2px solid #c5b7a0; }
+    .speech { position: absolute; top: 12px; padding: 9px 13px; background: #fff8e9; box-shadow: 3px 4px 0 rgba(64,47,29,.08); font-size: 15px; }
+    .speech.a { left: 0; transform: rotate(-4deg); clip-path: polygon(4% 0, 100% 4%, 96% 91%, 19% 100%, 0 80%); }
+    .speech.b { right: 0; top: 40px; transform: rotate(3deg); clip-path: polygon(0 5%, 95% 0, 100% 83%, 78% 100%, 4% 90%); }
+    .door-scene { position: relative; height: 300px; display: grid; place-items: center; }
+    .door { width: 165px; height: 255px; border: 10px solid #a55d47; background: #f1c76d; clip-path: polygon(7% 1%, 97% 0, 100% 98%, 0 100%); box-shadow: 7px 9px 0 rgba(64,47,29,.13); transform: rotate(2deg); }
+    .door::before { content: "?"; display: grid; place-items: center; width: 100%; height: 100%; font: 800 74px Georgia, serif; color: #89523d; }
+    .path-piece { position: absolute; left: 5%; right: 6%; bottom: 2%; height: 46px; background: var(--teal); clip-path: polygon(0 12%, 18% 20%, 34% 4%, 53% 16%, 71% 0, 88% 12%, 100% 3%, 96% 96%, 77% 82%, 58% 100%, 37% 84%, 18% 100%, 2% 84%); }
+    .stamp { display: inline-grid; place-items: center; width: 124px; height: 82px; padding: 6px; border: 2px dashed #9f5c47; color: #9f5c47; font-weight: 800; transform: rotate(-8deg); }
+    .limit-grid { display: grid; grid-template-columns: .92fr 1.08fr; gap: 30px; align-items: center; flex: 1; }
+    .stop-card { padding: 26px; background: #e99a7d; clip-path: polygon(4% 0, 98% 3%, 94% 100%, 0 94%); transform: rotate(-1deg); }
+    .stop-card h3 { font-size: 22px; }
+    .stop-card ul { padding-left: 22px; margin-bottom: 0; }
+    .stop-card li { font-size: 16px; margin-bottom: 8px; line-height: 1.45; }
+    .blank-page { min-height: 260px; display: grid; place-items: center; border: 2px dashed rgba(75,69,58,.35); color: var(--muted); text-align: center; transform: rotate(1deg); }
+    .blank-page strong { display: block; color: #4d514b; font-family: "Noto Serif TC", serif; font-size: 27px; }
+    .takeaway { padding: 22px 27px; border-left: 8px solid var(--coral); background: rgba(255,248,233,.72); font: 700 clamp(20px,2.4vw,29px)/1.55 "Noto Serif TC", serif; }
+    .closing-art { position: relative; display: grid; place-items: center; height: 280px; }
+    .map { position: absolute; width: 300px; height: 210px; background: #e9c56f; clip-path: polygon(5% 8%, 33% 0, 49% 10%, 75% 2%, 98% 11%, 93% 92%, 69% 100%, 48% 88%, 27% 98%, 0 89%); transform: rotate(-4deg); }
+    .map::after { content: ""; position: absolute; top: 50%; left: 8%; width: 84%; border-top: 3px dashed #9d624b; transform: rotate(-9deg); }
+    .pin { z-index: 2; align-self: center; justify-self: center; margin-top: -28px; width: 44px; height: 44px; border: 10px solid var(--coral); border-radius: 50% 50% 50% 4px; transform: rotate(-45deg); background: var(--cream); }
+    .refs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 12px; }
+    .ref-card { padding: 17px; min-height: 174px; background: var(--cream); box-shadow: 3px 5px 0 rgba(64,47,29,.08); clip-path: polygon(1% 3%, 98% 0, 100% 95%, 5% 100%, 0 14%); }
+    .ref-card:nth-child(2) { background: #f3d88e; transform: rotate(.6deg); }
+    .ref-card:nth-child(3) { background: #dce5d4; transform: rotate(-.6deg); }
+    .ref-card h3 { font-size: 16px; }
+    .ref-card p { font-size: 13px; line-height: 1.45; margin-bottom: 9px; }
+    .ref-card a { color: #3b655d; font-weight: 800; font-size: 13px; }
+    .nav { position: absolute; left: 50%; bottom: 2.1vh; z-index: 5; display: flex; align-items: center; gap: 13px; transform: translateX(-50%); }
+    .nav button { cursor: pointer; border: 1px solid rgba(56,50,42,.25); background: #f8efdd; color: var(--ink); min-width: 42px; min-height: 38px; border-radius: 20px; box-shadow: 0 3px 0 rgba(64,47,29,.10); }
+    .nav button:hover { background: #fff8e9; }
+    .progress { width: min(18vw, 220px); height: 5px; border-radius: 4px; background: rgba(61,55,45,.18); overflow: hidden; }
+    .progress span { display: block; width: 12.5%; height: 100%; background: var(--coral); transition: width .25s ease; }
+    .counter { min-width: 48px; color: #514a40; font-size: 13px; text-align: center; font-variant-numeric: tabular-nums; }
+    .hint { position: absolute; right: 3vw; bottom: 2.4vh; color: #71685c; font-size: 12px; }
+    @media (max-width: 760px) {
+      .deck { padding: 0; }
+      .slide { width: 100vw; height: 100vh; min-height: 0; padding: 34px 25px 78px; border-radius: 0; }
+      .slide::before { inset: 8px; }
+      .cover-grid, .split, .limit-grid { grid-template-columns: 1fr; gap: 12px; }
+      .art-board { min-height: 230px; transform: scale(.8); margin: -16px 0; }
+      .route { gap: 8px; }
+      .route-card { min-height: 166px; padding: 15px 12px; }
+      .route-card p { font-size: 13px; }
+      .number { font-size: 30px; }
+      .readers, .door-scene, .closing-art { height: 210px; }
+      .door { width: 118px; height: 180px; }
+      .refs { grid-template-columns: 1fr; gap: 8px; overflow: auto; }
+      .ref-card { min-height: 0; padding: 12px 16px; }
+      .ref-card h3 { margin-bottom: 4px; }
+      .ref-card p { margin-bottom: 4px; }
+      .hint { display: none; }
+      .nav { bottom: 14px; }
+      .progress { width: 18vw; }
+      .source { font-size: 11px; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+    /* 彩色鉛筆手帳：紙張格線、彩鉛筆觸與手繪筆記邊框 */
+    :root {
+      --paper: #fffdf5;
+      --ink: #333b45;
+      --muted: #66717b;
+      --coral: #ed7281;
+      --coral-light: #f6a6a2;
+      --mustard: #f4cb58;
+      --teal: #62b9ad;
+      --sage: #9acb8b;
+      --blue: #72a9e4;
+      --cream: #fffef8;
+      --shadow: rgba(45, 64, 90, .17);
+    }
+    body {
+      background-color: #dce9f1;
+      background-image: radial-gradient(rgba(61,111,155,.16) .7px, transparent .9px),
+        linear-gradient(135deg, rgba(255,255,255,.66), rgba(217,231,239,.3));
+      background-size: 8px 8px, 100% 100%;
+      font-family: "Kaiti TC", "DFKai-SB", "Microsoft JhengHei", sans-serif;
+    }
+    .slide {
+      border-radius: 7px 4px 8px 5px;
+      background-color: var(--paper);
+      background-image:
+        linear-gradient(90deg, transparent 0 54px, rgba(238,111,125,.22) 54px 56px, transparent 56px),
+        repeating-linear-gradient(180deg, transparent 0 35px, rgba(91,154,207,.17) 35px 36px),
+        radial-gradient(rgba(104,128,145,.09) .6px, transparent .8px);
+      background-size: 100% 100%, 100% 36px, 7px 7px;
+      box-shadow: 0 18px 44px var(--shadow), 2px 3px 0 rgba(255,255,255,.92), 0 0 0 1px rgba(82,121,153,.2);
+    }
+    .slide::before {
+      inset: 12px;
+      border: 2px solid rgba(76,126,171,.25);
+      border-radius: 10px 7px 12px 8px;
+      transform: rotate(-.12deg);
+    }
+    .slide::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      left: 29px;
+      top: 30px;
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: #f29a9a;
+      box-shadow: 0 35px #f4cb58, 0 70px #73c5b4, 0 105px #91b9ec, 0 140px #d2a5d9,
+        0 175px #f29a9a, 0 210px #f4cb58, 0 245px #73c5b4, 0 280px #91b9ec;
+      opacity: .82;
+    }
+    .kicker { color: #516478; }
+    .kicker::before { background: repeating-linear-gradient(100deg, #ed7281 0 3px, #f08b91 3px 5px); }
+    h1, h2 { color: #30465e; text-shadow: .5px .5px 0 rgba(48,70,94,.15); }
+    .cover-note, .label, .chip, .route-card, .quote-paper, .stop-card,
+    .blank-page, .takeaway, .speech, .stamp, .nav button {
+      outline: 1px solid rgba(67,89,111,.17);
+      outline-offset: -3px;
+    }
+    .cover-note {
+      background-color: #ffe078;
+      background-image: repeating-linear-gradient(165deg, rgba(180,127,22,.12) 0 1px, transparent 1px 4px);
+      border-radius: 3px 7px 4px 5px;
+    }
+    .route-card, .quote-paper, .stop-card, .speech, .takeaway {
+      background-image: repeating-linear-gradient(145deg, rgba(255,255,255,.2) 0 2px, transparent 2px 6px);
+      border-radius: 8px 5px 9px 6px;
+    }
+    .route-card:nth-child(1) { background-color: #ffe184; }
+    .route-card:nth-child(2) { background-color: #ffaaa0; }
+    .route-card:nth-child(3) { background-color: #a9d99c; }
+    .quote-paper { background-color: #fff6c9; }
+    .stop-card { background-color: #ffd1ba; }
+    .chip { border-radius: 8px 5px 9px 6px; }
+    .chip:nth-child(1) { background-color: #ffe078; }
+    .chip:nth-child(2) { background-color: #ff9e9e; }
+    .chip:nth-child(3) { background-color: #8ed4c0; }
+    .chip:nth-child(4) { background-color: #a9c7f4; }
+    .book .page-left, .book .page-right { border-color: #8ca9c4; }
+    .book-label span { background: repeating-linear-gradient(0deg, #ffe17c 0 3px, #ffdf70 3px 6px); }
+    .book-spine { background: repeating-linear-gradient(90deg, #ee7281 0 3px, #f49391 3px 6px); }
+    .tape { background: repeating-linear-gradient(0deg, rgba(123,190,226,.78) 0 3px, rgba(154,210,231,.78) 3px 6px); }
+    .sun { background: radial-gradient(circle at 35% 35%, #ffe984, #f3c84f 75%); }
+    .leaf { background: repeating-linear-gradient(125deg, #76c8ad 0 5px, #69bda5 5px 8px); }
+    .person .head { background: #eaa27c; }
+    .person .body { background: repeating-linear-gradient(135deg, #8db8ed 0 5px, #78a8e5 5px 8px); }
+    .person.two .body { background: repeating-linear-gradient(135deg, #f48b91 0 5px, #ec7787 5px 8px); }
+    .map { background: repeating-linear-gradient(155deg, #ffe37c 0 5px, #f5d15e 5px 8px); }
+    .nav button { border-color: rgba(56,103,149,.35); background: #fffdf5; }
+    .nav button:hover { background: #fff0a9; }
+    .progress span { background: repeating-linear-gradient(90deg, #ed7281 0 5px, #f59791 5px 8px); }
+    .source { color: #5f6c79; }
+    @media print {
+      html, body { overflow: visible; background: white; }
+      .deck { display: block; width: auto; height: auto; padding: 0; }
+      .slide, .slide.active { display: flex !important; width: 100%; height: 100vh; min-height: 0; box-shadow: none; break-after: page; animation: none; }
+      .nav, .hint { display: none; }
+    }
+  </style>
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <main class="deck" aria-label="麥布二氏心理類型量表簡報">
+    <section class="slide active" aria-roledescription="投影片" aria-label="第 1 頁，共 8 頁">
+      <div class="slide-head"><span class="kicker">一場慢慢展開的導讀</span><span class="chapter">01 / 開場</span></div>
+      <div class="cover-grid">
+        <div>
+          <span class="cover-note">從一篇 1999 年綜覽出發</span>
+          <h1>翻開一張<br>認識自己的地圖</h1>
+          <p class="deck-subtitle">麥布二氏心理類型量表、人格類型理論</p>
+          <p class="lede">一篇文章，如何把榮格心理類型、MBTI 與學習放進同一段閱讀旅程？</p>
+        </div>
+        <div class="art-board" aria-hidden="true">
+          <div class="shape sun"></div><div class="shape leaf"></div>
+          <div class="tape"></div>
+          <div class="book"><div class="page-left"></div><div class="page-right"></div><div class="book-spine"></div><div class="book-label"><span>心理類型<br>與學習</span></div></div>
+        </div>
+      </div>
+      <div class="source">內容依據：楊淑晴（1999）〈麥布二氏心理類型量表之綜覽〉。<a href="wiki/sources/yang-shuching-1999-mbti-overview.md">查看 Wiki 來源頁</a></div>
+    </section>
+
+    <section class="slide" aria-roledescription="投影片" aria-label="第 2 頁，共 8 頁">
+      <div class="slide-head"><span class="kicker">第一站</span><span class="chapter">02 / 理論的骨架</span></div>
+      <h2>從態度與功能，看見理論的骨架</h2>
+      <p class="lede">文章先介紹人的態度與心理功能，再把它們帶到類型描述。</p>
+      <div class="route">
+        <article class="route-card"><span class="number">E / I</span><h3>兩種態度</h3><p>外向與內向</p></article>
+        <article class="route-card"><span class="number">S N T F</span><h3>四種功能</h3><p>感覺、直觀、思維、情感</p></article>
+        <article class="route-card"><span class="number">J / P</span><h3>外在取向</h3><p>判斷與知覺面向由 Myers 與 Briggs 加以凸顯</p></article>
+      </div>
+      <p class="small">以上是楊淑晴（1999）對理論脈絡的介紹。</p>
+      <div class="source">來源：<a href="wiki/sources/yang-shuching-1999-mbti-overview.md">Wiki 文章整理頁</a>。</div>
+    </section>
+
+    <section class="slide" aria-roledescription="投影片" aria-label="第 3 頁，共 8 頁">
+      <div class="slide-head"><span class="kicker">第二站</span><span class="chapter">03 / 從理論到量表</span></div>
+      <div class="split">
+        <div>
+          <h2>四組偏好，十六種組合</h2>
+          <p class="lede">依本文說明，MBTI 以簡明自陳反應呈現個人在知覺與判斷方面的基本偏好。</p>
+          <div class="chips"><span class="chip">E / I</span><span class="chip">S / N</span><span class="chip">T / F</span><span class="chip">J / P</span></div>
+          <p>文章將四組偏好組合成十六種類型，作為理解類型理論的一種方式。</p>
+        </div>
+        <div class="quote-paper">
+          <span class="label">文章提醒</span>
+          <h3>偏好像連續線的兩端</h3>
+          <p>每個人都會運用兩端傾向，只是較偏向其中一端；文章並指出類型沒有長短優劣。</p>
+          <p class="small">每個人都會運用不同傾向，只是慣常偏好有所不同。</p>
+        </div>
+      </div>
+      <div class="source">來源：<a href="wiki/sources/yang-shuching-1999-mbti-overview.md">Wiki 文章整理頁</a>。</div>
+    </section>
+
+    <section class="slide" aria-roledescription="投影片" aria-label="第 4 頁，共 8 頁">
+      <div class="slide-head"><span class="kicker">第三站</span><span class="chapter">04 / 偏好走進教室</span></div>
+      <div class="split">
+        <div>
+          <h2>偏好，如何遇見學習情境？</h2>
+          <p class="lede">文章舉例整理不同面向可能偏好的課堂活動：</p>
+          <p><strong>E / I</strong> 團體討論、特定事實 / 獨立學習、概念與閱讀</p>
+          <p><strong>S / N</strong> 具體細節、循序漸進 / 抽象概念、可能性</p>
+          <p><strong>T / F</strong> 系統教材、邏輯分析 / 人際互動、關係脈絡</p>
+          <p><strong>J / P</strong> 有秩序、按計畫 / 彈性探索、發現式課業</p>
+        </div>
+        <div class="readers" aria-hidden="true"><div class="speech a">不同活動<br>不同偏好</div><div class="speech b">多種路徑<br>一起學習</div><div class="person one"><div class="head"></div><div class="body"></div></div><div class="person two"><div class="head"></div><div class="body"></div></div><div class="paper-book"></div></div>
+      </div>
+      <div class="source">來源：<a href="wiki/concepts/jungian-types-and-learning.md">Wiki 概念頁</a>。</div>
+    </section>
+
+    <section class="slide" aria-roledescription="投影片" aria-label="第 5 頁，共 8 頁">
+      <div class="slide-head"><span class="kicker">第四站</span><span class="chapter">05 / 偏好與學業</span></div>
+      <h2>偏好、興趣與學業</h2>
+      <div class="limit-grid">
+        <div class="stop-card">
+          <h3>文章轉述的預測涉及：</h3>
+          <ul>
+            <li>學業表現與性向、勤勉、興趣等面向相關。</li>
+            <li>不同偏好可能呼應不同課業要求。</li>
+            <li>多元策略讓學習者發揮不同長處。</li>
+          </ul>
+        </div>
+        <div class="blank-page"><div><strong>每種偏好都有學習路徑</strong><span>概念與細節<br>分析與互動<br>計畫與探索</span></div></div>
+      </div>
+      <div class="source">來源：<a href="wiki/sources/yang-shuching-1999-mbti-overview.md">Wiki 來源頁</a>。</div>
+    </section>
+
+    <section class="slide" aria-roledescription="投影片" aria-label="第 6 頁，共 8 頁">
+      <div class="slide-head"><span class="kicker">把故事收回來</span><span class="chapter">06 / 文章的教育結語</span></div>
+      <div class="split">
+        <div>
+          <h2>不把地圖變成界線</h2>
+          <div class="takeaway">作者主張類型不是決定論：學生可以練習不偏愛的策略，教師可以把偏好作為教學參考。</div>
+          <p class="small" style="margin-top:18px">重點是認識偏好、擴展策略，依情境調整。</p>
+        </div>
+        <div class="closing-art" aria-hidden="true"><div class="map"></div><div class="pin"></div></div>
+      </div>
+      <div class="source">依據：<a href="wiki/sources/yang-shuching-1999-mbti-overview.md">楊淑晴（1999）文章整理</a>與<a href="wiki/concepts/jungian-types-and-learning.md">Wiki 概念頁</a>。</div>
+    </section>
+
+    <section class="slide" aria-roledescription="投影片" aria-label="第 7 頁，共 8 頁">
+      <div class="slide-head"><span class="kicker">把認識帶回自己</span><span class="chapter">07 / 偏好與學習策略</span></div>
+      <h2>讓偏好成為認識自己的起點</h2>
+      <div class="route">
+        <article class="route-card"><span class="number">認識</span><h3>看見慣用偏好</h3><p>理解自己慣常注意資訊與作出判斷的方式。</p></article>
+        <article class="route-card"><span class="number">運用</span><h3>發揮學習長處</h3><p>選擇適合任務的活動與學習策略。</p></article>
+        <article class="route-card"><span class="number">拓展</span><h3>練習不同路徑</h3><p>依情境調整，發展原本較少使用的策略。</p></article>
+      </div>
+      <p class="takeaway">教師理解學生的差異，能設計更多元的教材與參與方式。</p>
+      <div class="source">依據：<a href="wiki/concepts/jungian-types-and-learning.md">榮格心理類型、MBTI 與學習</a>。</div>
+    </section>
+
+    <section class="slide" aria-roledescription="投影片" aria-label="第 8 頁，共 8 頁">
+      <div class="slide-head"><span class="kicker">旅程的收尾</span><span class="chapter">08 / 心理類型與學習</span></div>
+      <h2>一張開放的學習地圖</h2>
+      <div class="split">
+        <div>
+          <p class="lede">榮格的心理類型理論描繪人們認識世界、作出判斷的不同偏好；Myers 與 Briggs 將這些概念整理為 MBTI，讓個人有一套理解類型的語言。</p>
+          <p>楊淑晴（1999）進一步介紹這些偏好如何呈現在學習活動中。認識偏好能幫助學生發揮長處、拓展策略，也讓教師以更多元的方式設計教學。</p>
+          <p class="takeaway">認識自己的偏好，是拓展學習方式的起點。</p>
+        </div>
+        <div class="closing-art" aria-hidden="true"><div class="map"></div><div class="pin"></div></div>
+      </div>
+      <div class="source">延伸閱讀：<a href="wiki/sources/yang-shuching-1999-mbti-overview.md">文章整理</a>｜<a href="wiki/concepts/jungian-types-and-learning.md">概念頁</a>。</div>
+    </section>
+  </main>
+  <nav class="nav" aria-label="簡報導覽">
+    <button type="button" id="prev" aria-label="上一頁">←</button>
+    <div class="progress" aria-hidden="true"><span id="progress"></span></div>
+    <span class="counter" id="counter" aria-live="polite">1 / 8</span>
+    <button type="button" id="next" aria-label="下一頁">→</button>
+  </nav>
+  <div class="hint">使用 ← → 鍵翻頁</div>
+  <script>
+    (() => {
+      const slides = [...document.querySelectorAll('.slide')];
+      const counter = document.getElementById('counter');
+      const progress = document.getElementById('progress');
+      let current = 0;
+      function show(index) {
+        current = Math.max(0, Math.min(slides.length - 1, index));
+        slides.forEach((slide, i) => {
+          slide.classList.toggle('active', i === current);
+          slide.setAttribute('aria-hidden', i === current ? 'false' : 'true');
+        });
+        counter.textContent = `${current + 1} / ${slides.length}`;
+        progress.style.width = `${((current + 1) / slides.length) * 100}%`;
+        history.replaceState(null, '', `#${current + 1}`);
+      }
+      document.getElementById('prev').addEventListener('click', () => show(current - 1));
+      document.getElementById('next').addEventListener('click', () => show(current + 1));
+      document.addEventListener('keydown', event => {
+        if (['ArrowRight', 'PageDown', ' '].includes(event.key)) { event.preventDefault(); show(current + 1); }
+        if (['ArrowLeft', 'PageUp'].includes(event.key)) { event.preventDefault(); show(current - 1); }
+        if (event.key === 'Home') show(0);
+        if (event.key === 'End') show(slides.length - 1);
+      });
+      const initial = Number(location.hash.slice(1));
+      show(Number.isInteger(initial) && initial > 0 ? initial - 1 : 0);
+    })();
+  </script>
+</body>
+</html>
